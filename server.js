@@ -18,7 +18,7 @@ app.configure(function(){
     app.use('/', express.static(__dirname + '/'));
     app.use('/assets/js', express.static(__dirname + '/assets/js'));
     app.use('/assets/css', express.static(__dirname + '/assets/css'));
-    app.use('/assets/img', express.static(__dirname + '/assets/img'));
+    app.use('/img', express.static(__dirname + '/assets/img'));
     //app.use('/fonts', express.static(__dirname + '/public/fonts'));
 });
 
