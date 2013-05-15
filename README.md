@@ -1,6 +1,16 @@
-Install notes
-NOTE: No package.json is availibe at this moment. Will be added later.
+# Installation
 
-1. Install all required libs
-2. run $ node server.js
-3. Node is serving the application on port 8001
+```
+npm install
+bower install
+```
+
+This will install `node_modules` and `components`.
+
+# Running
+
+```
+node server.js
+```
+
+The application is now running on [localhost:8001](http://localhost:8001)
