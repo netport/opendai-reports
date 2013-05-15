@@ -27,6 +27,13 @@
     </footer>
   </script>
 
+  <script type="text/x-handlebars" id="index">
+    <form>
+      <input name="username" type="text" placeholder="användarnamn" />
+      <input name="password" type="password" placeholder="lösenord" />
+      <button {{action 'login'}}>Logga in</button>
+    </form>
+  </script>
 
 	<!-- Report template -->
 	<script type="text/x-handlebars" id="reports">
@@ -37,41 +44,40 @@
 		{{/each}}
 		</ul>
 		<div id="info">{{outlet}}</div>
-		<button {{action 'newReport'}}>Ny rapport</button>
+		{{#if newReport}}
+            {{partial 'report/_new'}}
+        {{else}}
+            <button {{action 'new'}}>Ny rapport</button>
+        {{/if}}
 		<button {{action 'centerMap'}}>Min position</button>
-  	</script>
-
-  <script type="text/x-handlebars" id="index">
-    <form>
-      <input name="username" type="text" placeholder="användarnamn" />
-      <input name="password" type="password" placeholder="lösenord" />
-      <button {{action 'login'}}>Logga in</button>
-    </form>
   </script>
 
-
-  	<script type="text/x-handlebars" id="report">
+  <script type="text/x-handlebars" id="report">
 		Reportinfo
 		<h4>{{title}}</h4>
 		<p>{{description}}</p>
 		{{#if editing}}
-		{{partial 'report/edit'}}
+            {{partial 'report/edit'}}
 		{{else}}
-		<button {{action 'edit'}}>Ändra</button>
+            <button {{action 'edit'}}>Ändra</button>
 		{{/if}}
 	</script>
 
+    <!-- Edit report template -->
 	<script type="text/x-handlebars" id="report/_edit">
 		<h3>Editor</h3>
 		<p>{{view Ember.TextField valueBinding='title'}}</p>
 		<p>{{view Ember.TextArea valueBinding='description'}}</p>
-		<p><button {{action 'save' this}}>Spara</button>
+		<p><button {{action 'save'}}>Spara</button>
 	</script>
 
-
-  <script type="text/x-handlebars" id="editor">
-    Editor
-  </script>
+    <!-- New report template -->
+    <script type="text/x-handlebars" id="report/_new">
+        <h3>New report</h3>
+        <p>{{view Ember.TextField valueBinding='title'}}</p>
+        <p>{{view Ember.TextArea valueBinding='description'}}</p>
+        <p><button {{action 'save'}}>Spara</button>
+    </script>  
 
   <!-- Loading js -->
   <script type="text/javascript" src="components/jquery/jquery.min.js"></script>

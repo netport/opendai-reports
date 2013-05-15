@@ -1,5 +1,5 @@
 window.App = Ember.Application.create({
-	LOG_TRANSITIONS: true
+	
 });
 
 App.Store = DS.Store.extend({
@@ -11,22 +11,17 @@ App.Store = DS.Store.extend({
 
 App.Router.map(function(){
 	this.resource('reports', function() {
-		this.resource('report', { path: ':report_id' }, function(){
-
-		});
+		this.resource('report', { path: ':report_id' });
 	});
 });
 
 App.ReportsRoute = Ember.Route.extend({
 	model: function() {
-		return App.Report.find()
+		return App.Report.find();
 	}
 });
 
-App.ReportRoute = Ember.Route.extend({
-
-});
-
+//Controller for single Report
 App.ReportController = Ember.ObjectController.extend({
 	info: function(model) {
 		var lat = model.get('lat');
@@ -48,11 +43,12 @@ App.ReportsController = Ember.ArrayController.extend({
 	centerMap: function() {
 		App.Map.map.setView(App.User.position, 16);
 	},
-	newReport: function() {
-		
+	new: function() {
+		this.set('newReport', true);
 	},
-	updateReport: function(model) {
-		
+	save: function(model) {
+		console.log(model);
+		//App.Report.createRecord(model);
 	}
 });
 
@@ -108,14 +104,15 @@ App.Report = DS.Model.extend({
 	lat: DS.attr('number'),
 	lng: DS.attr('number'),
 	type: DS.attr('string'),
-	description: DS.attr('string'),
-
+	description: DS.attr('string')/*,
+	
 	updated: function(item) {
 		var lat = item.get('lat');
 		var lng = item.get('lng');
 		var desc = item.get('description');
 		var test = L.marker([lat, lng], {icon: App.Map.greenIcon}).addTo(App.Map.map).bindPopup(desc);
 	}.observes('title')
+	*/
 });
 
 
