@@ -38,14 +38,14 @@
 	<!-- Report template -->
 	<script type="text/x-handlebars" id="reports">
 		<h3>Rapporter och förslag:</h3>
-		{{outlet editor}}
 		<ul>
 		{{#each model}}
 			<li>{{#linkTo 'report' this}}{{title}}{{/linkTo}}</li>
 		{{/each}}
 		</ul>
 		<div id="info">{{outlet}}</div>
-		<button {{action 'centerMap' target view}}>Min position</button>
+		<button {{action 'newReport'}}>Ny rapport</button>
+		<button {{action 'centerMap'}}>Min position</button>
   	</script>
 
 	<script type="text/x-handlebars" id="reports/index">
@@ -56,11 +56,18 @@
 		Reportinfo
 		<h4>{{title}}</h4>
 		<p>{{description}}</p>
-		<button {{action 'save' this}}>Spara</button>
+		{{#if editing}}
+		{{partial 'report/edit'}}
+		{{else}}
+		<button {{action 'edit'}}>Ändra</button>
+		{{/if}}
 	</script>
 
-	<script type="text/x-handlebars" id="editor">
-		Editor
+	<script type="text/x-handlebars" id="report/_edit">
+		<h3>Editor</h3>
+		<p>{{view Ember.TextField valueBinding='title'}}</p>
+		<p>{{view Ember.TextArea valueBinding='description'}}</p>
+		<p><button {{action 'save'}}>Spara</button>
 	</script>
 
 	<!-- Loading js -->

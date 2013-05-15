@@ -46,7 +46,7 @@ function queryDB(query, callback) {
       } else {
         data = result.rows;
       }
-      callback(data);    
+      callback(data);
     });
 
     done();//call done() to signal you are finished with the client
@@ -54,7 +54,6 @@ function queryDB(query, callback) {
 }
 
 app.get('/api/reports', function(req, res){
-
   if(data.reports == null || cache == false) {
     queryDB('SELECT Reports.reports.id, Reports.reports.title, Reports.reports.lat, Reports.reports.lng, Reports.reports.types_id, Reports.reports.description, Reports.types.title AS type FROM Reports.reports INNER JOIN Reports.types ON Reports.reports.types_id = Reports.types.id', function(result){
       data.reports = result;
@@ -63,8 +62,19 @@ app.get('/api/reports', function(req, res){
   } else {
     res.send(data);
   }
-  
-	
+});
+
+app.get('/api/reports/:id', function(req, res){
+  var id = req.query["id"];
+  console.log(id);
+  if(data.reports == null || cache == false) {
+    queryDB('SELECT * FROM Reports.reports WHERE id = '+id+' LIMIT 1', function(result){
+      data.reports = result;
+      res.send(data);
+    });  
+  } else {
+    res.send(data);
+  }
 });
 
 app.post('/api/reports', function(req, res){
@@ -97,10 +107,12 @@ app.post('/api/reports', function(req, res){
   */
 });
 
-app.put('/reports', function(req, res){
+app.put('/api/reports/:id', function(req, res){
   var id = req.query["id"];
-  console.log(req.body);
-  res.send(200, 'saving'+id);
+  var report = req.body.report;
+  queryDB("UPDATE Reports.reports SET title = '"+report.title+"' WHERE id = "+report.reportid+" LIMIT 1", function(){
+    res.send(200, 'saving'+id);  
+  });
 });
 
 app.listen(port);

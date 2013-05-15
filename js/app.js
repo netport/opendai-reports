@@ -1,4 +1,6 @@
-window.App = Ember.Application.create();
+window.App = Ember.Application.create({
+	LOG_TRANSITIONS: true
+});
 
 App.Store = DS.Store.extend({
 	revision: 12,
@@ -32,14 +34,25 @@ App.ReportController = Ember.ObjectController.extend({
 		var map = App.Map.get('map');
 		map.setView([lat, lng], 16);
 	},
-	addNew: function(position) {
-		App.AddReportView.appendTo('#editor');
+	edit: function() {
+		this.set('editing', true);
+	},	
+	save: function() {
+		this.get('store').commit();
+		this.set('editing', false);
 	}
 });
 
+//Controller for Reports
 App.ReportsController = Ember.ArrayController.extend({
 	centerMap: function() {
 		App.Map.map.setView(App.User.position, 16);
+	},
+	newReport: function() {
+		
+	},
+	updateReport: function(model) {
+		
 	}
 });
 
@@ -75,9 +88,10 @@ App.ReportsView = Ember.View.extend({
 		}).addTo(App.Map.map);
 
 		App.Map.map.on('click', function(e){
-			App.Report.create(function(){
-				
+			App.ReportsRoute.redirect(function(){
+				console.log('test');
 			});
+			//App.Report.createRecord({title: 'hejsan', lat: e.latlng.lat, lng: e.latlng.lng});
 		});
 
 		App.Map.greenIcon = L.icon({
@@ -86,10 +100,6 @@ App.ReportsView = Ember.View.extend({
 		  iconAnchor: [12.5, 41],
 		  popupAnchor: [-1, -41]
 		});
-    
-	},
-	centerMap: function() {
-		App.Map.setView(App.User.position, 16);
 	}
 });
 
