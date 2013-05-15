@@ -54,27 +54,17 @@ function queryDB(query, callback) {
 }
 
 app.get('/api/reports', function(req, res){
-  if(data.reports == null || cache == false) {
-    queryDB('SELECT Reports.reports.id, Reports.reports.title, Reports.reports.lat, Reports.reports.lng, Reports.reports.types_id, Reports.reports.description, Reports.types.title AS type FROM Reports.reports INNER JOIN Reports.types ON Reports.reports.types_id = Reports.types.id', function(result){
-      data.reports = result;
-      res.send(data);
-    });  
-  } else {
+  queryDB('SELECT Reports.reports.id, Reports.reports.title, Reports.reports.lat, Reports.reports.lng, Reports.reports.types_id, Reports.reports.description, Reports.types.title AS type FROM Reports.reports INNER JOIN Reports.types ON Reports.reports.types_id = Reports.types.id', function(result){
+    data.reports = result;
     res.send(data);
-  }
+  });
 });
 
 app.get('/api/reports/:id', function(req, res){
   var id = req.params.id;
-  console.log(id);
-  if(data.reports == null || cache == false) {
-    queryDB('SELECT * FROM Reports.reports WHERE id = '+id+' LIMIT 1', function(result){
-      data.reports = result;
-      res.send(data);
-    });  
-  } else {
-    res.send(data);
-  }
+  queryDB('SELECT * FROM Reports.reports WHERE id = '+id+' LIMIT 1', function(result){
+    res.send(result);
+  });
 });
 
 app.post('/api/reports', function(req, res){
@@ -82,35 +72,14 @@ app.post('/api/reports', function(req, res){
   queryDB("INSERT INTO Reports.reports(title, types_id, description) VALUES('testar', 2, 'testar igen')", function(result){
     res.send(200, result);
   });
-  /*
 
-  pg.connect(dbConn, function(err, client, done) {
-    if(err) console.log(err);
-
-    client.query("INSERT INTO Reports.reports(title, types_id) VALUES('test', 1)", function(err, result){
-      if(err) console.log(err);
-
-      //reports = result.rows;
-      res.send(200, reports);
-    });
-    done();  //call done() to signal you are finished with the client
-  });
-  */
-  /*
-  var data = req.body;
-  lastPost = reports[reports.length-1];
-  data.id = lastPost.id+1;
-  data.created = new Date();
-  reports.push(data);
-  console.log(reports);
-  res.send(200, 'success');
-  */
 });
 
 app.put('/api/reports/:id', function(req, res){
+  console.log('Saving data');
   var id = req.params.id;
   var report = req.body.report;
-  queryDB("UPDATE Reports.reports SET title = '"+report.title+"' WHERE id = "+id+"", function(){
+  queryDB("UPDATE Reports.reports SET title = '"+report.title+"', description = '"+report.description+"' WHERE id = "+id+"", function(){
     res.send(200, 'saving'+id);  
   });
 });
