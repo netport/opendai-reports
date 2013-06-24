@@ -1,6 +1,4 @@
-window.App = Ember.Application.create({
-	
-});
+window.App = Ember.Application.create();
 
 App.Store = DS.Store.extend({
 	revision: 12,
@@ -10,8 +8,9 @@ App.Store = DS.Store.extend({
 });
 
 App.Router.map(function(){
-	this.resource('reports', function() {
+	this.resource('reports', function(){
 		this.resource('report', { path: ':report_id' });
+		this.route('new');
 	});
 });
 
@@ -19,6 +18,23 @@ App.ReportsRoute = Ember.Route.extend({
 	model: function() {
 		return App.Report.find();
 	}
+});
+
+App.ReportsNewRoute = Ember.Route.extend({
+	model: function(){
+		return App.Report.createRecord();
+	},
+	events: {
+		save: function(report) {
+			report.get('transaction').commit();
+			this.transitionToRoute('reports.index');
+		}
+	}
+});
+
+
+App.ReportsNewController = Ember.ObjectController.extend({
+
 });
 
 //Controller for single Report
@@ -43,12 +59,8 @@ App.ReportsController = Ember.ArrayController.extend({
 	centerMap: function() {
 		App.Map.map.setView(App.User.position, 16);
 	},
-	new: function() {
-		this.set('newReport', true);
-	},
 	save: function(model) {
 		console.log(model);
-		//App.Report.createRecord(model);
 	}
 });
 
@@ -59,17 +71,17 @@ App.Map = Ember.Object.create({
 
 App.User = Ember.Object.create({
 	username: null,
-	position: null,
+	position: null
 });
 
 App.ReportsView = Ember.View.extend({
 	didInsertElement: function() {
 		//CHECK USER POSITION
 		if (navigator.geolocation) {
-	      navigator.geolocation.getCurrentPosition(this.showPosition);
-	    } else {
-	      alert('Doesn´t support geolocation');
-	    }
+			navigator.geolocation.getCurrentPosition(this.showPosition);
+		} else {
+			alert('Doesn´t support geolocation');
+		}
 	},
 	showPosition: function(coordinates) {
 		App.User.position = [coordinates.coords.latitude, coordinates.coords.longitude];
@@ -91,10 +103,10 @@ App.ReportsView = Ember.View.extend({
 		});
 
 		App.Map.greenIcon = L.icon({
-		  iconUrl: 'img/marker-icon.png',
-		  shadowUrl: 'img/marker-shadow.png',
-		  iconAnchor: [12.5, 41],
-		  popupAnchor: [-1, -41]
+			iconUrl: 'img/marker-icon.png',
+			shadowUrl: 'img/marker-shadow.png',
+			iconAnchor: [12.5, 41],
+			popupAnchor: [-1, -41]
 		});
 	}
 });
@@ -106,13 +118,14 @@ App.Report = DS.Model.extend({
 	type: DS.attr('string'),
 	description: DS.attr('string')/*,
 	
+	//Updating map with POIs
 	updated: function(item) {
 		var lat = item.get('lat');
 		var lng = item.get('lng');
 		var desc = item.get('description');
 		var test = L.marker([lat, lng], {icon: App.Map.greenIcon}).addTo(App.Map.map).bindPopup(desc);
 	}.observes('title')
-	*/
+*/
 });
 
 

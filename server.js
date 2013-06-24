@@ -68,8 +68,9 @@ app.get('/api/reports/:id', function(req, res){
 });
 
 app.post('/api/reports', function(req, res){
-
-  queryDB("INSERT INTO Reports.reports(title, types_id, description) VALUES('testar', 2, 'testar igen')", function(result){
+  var data = req.body.report;
+  console.log(data);
+  queryDB("INSERT INTO Reports.reports(title, types_id, description) VALUES('"+data.title+"', 2, '"+data.description+"')", function(result){
     res.send(200, result);
   });
 

@@ -44,11 +44,8 @@
 		{{/each}}
 		</ul>
 		<div id="info">{{outlet}}</div>
-		{{#if newReport}}
-            {{partial 'report/_new'}}
-        {{else}}
-            <button {{action 'new'}}>Ny rapport</button>
-        {{/if}}
+
+        {{#linkTo "reports.new"}}Ny rapport{{/linkTo}}
 		<button {{action 'centerMap'}}>Min position</button>
   </script>
 
@@ -68,15 +65,15 @@
 		<h3>Editor</h3>
 		<p>{{view Ember.TextField valueBinding='title'}}</p>
 		<p>{{view Ember.TextArea valueBinding='description'}}</p>
-		<p><button {{action 'save'}}>Spara</button>
+		<p><button {{action 'save' this}}>Spara</button>
 	</script>
 
     <!-- New report template -->
-    <script type="text/x-handlebars" id="report/_new">
+    <script type="text/x-handlebars" id="reports/new">
         <h3>New report</h3>
         <p>{{view Ember.TextField valueBinding='title'}}</p>
         <p>{{view Ember.TextArea valueBinding='description'}}</p>
-        <p><button {{action 'save'}}>Spara</button>
+        <p><button {{action 'save' this}}>Spara</button>
     </script>  
 
   <!-- Loading js -->
