@@ -16,9 +16,9 @@ app.all('/*', function(req, res, next) {
 
 app.configure(function(){
     app.use('/', express.static(__dirname + '/'));
-    app.use('/assets/js', express.static(__dirname + '/assets/js'));
-    app.use('/assets/css', express.static(__dirname + '/assets/css'));
-    app.use('/img', express.static(__dirname + '/assets/img'));
+    app.use('/app/', express.static(__dirname + '/app/'));
+    app.use('/app/styles', express.static(__dirname + '/app/styles'));
+    app.use('/app/img', express.static(__dirname + '/app/img'));
     //app.use('/fonts', express.static(__dirname + '/public/fonts'));
 });
 
