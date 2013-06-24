@@ -1,6 +1,4 @@
 {
-  "name": "opendai-reports",
-  "version": "0.0.0",
   "ignore": [
     "**/.*",
     "node_modules",
