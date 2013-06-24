@@ -1,87 +1,44 @@
+<!doctype html>
 <html lang="en">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta charset="utf-8">
-    <title>Open-DAI Reports</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="stylesheet" href="components/leaflet/dist/leaflet.css" />
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+
+  <title>Backbone Boilerplate</title>
+
+  <!-- Application styles. -->
+
+  <!--(if target dummy)><!-->
+  <link rel="stylesheet" href="/app/styles/index.css">
+  <!--<!(endif)-->
+
+  <!--(if target release)>
+  <link rel="stylesheet" href="index.css">
+  <!(endif)-->
+
+  <!--(if target debug)>
+  <link rel="stylesheet" href="index.css">
+  <!(endif)-->
 </head>
+
 <body>
+  <!-- Application container. -->
 
-  <!-- Application outline -->
-  <script type="text/x-handlebars">
-    <header>
-      {{#linkTo "index"}}Logga in{{/linkTo}}
-      {{#linkTo "reports"}}Rapporter{{/linkTo}}
-    </header>
-    {{outlet map}}
-    <div id="mapContainer" style="width:100%; height:300px;"></div>
-    <div>
-      {{outlet}}
-    </div>
+  <main role="main" id="main"></main>
 
-    <footer>
-      <h6>Powered by Open-DAI</h6>
-    </footer>
-  </script>
+  <!-- Application source. -->
 
-  <script type="text/x-handlebars" id="index">
-    <form>
-      <input name="username" type="text" placeholder="användarnamn" />
-      <input name="password" type="password" placeholder="lösenord" />
-      <button {{action 'login'}}>Logga in</button>
-    </form>
-  </script>
+  <!--(if target dummy)><!-->
+  <script data-main="/app/config" src="/vendor/js/libs/require.js"></script>
+  <!--<!(endif)-->
 
-	<!-- Report template -->
-	<script type="text/x-handlebars" id="reports">
-		<h3>Rapporter och förslag:</h3>
-		<ul>
-		{{#each model}}
-			<li>{{#linkTo 'report' this}}{{title}}{{/linkTo}}</li>
-		{{/each}}
-		</ul>
-		<div id="info">{{outlet}}</div>
+  <!--(if target release)>
+  <script src="require.js"></script>
+  <!(endif)-->
 
-        {{#linkTo "reports.new"}}Ny rapport{{/linkTo}}
-		<button {{action 'centerMap'}}>Min position</button>
-  </script>
-
-  <script type="text/x-handlebars" id="report">
-		Reportinfo
-		<h4>{{title}}</h4>
-		<p>{{description}}</p>
-		{{#if editing}}
-            {{partial 'report/edit'}}
-		{{else}}
-            <button {{action 'edit'}}>Ändra</button>
-		{{/if}}
-	</script>
-
-    <!-- Edit report template -->
-	<script type="text/x-handlebars" id="report/_edit">
-		<h3>Editor</h3>
-		<p>{{view Ember.TextField valueBinding='title'}}</p>
-		<p>{{view Ember.TextArea valueBinding='description'}}</p>
-		<p><button {{action 'save' this}}>Spara</button>
-	</script>
-
-    <!-- New report template -->
-    <script type="text/x-handlebars" id="reports/new">
-        <h3>New report</h3>
-        <p>{{view Ember.TextField valueBinding='title'}}</p>
-        <p>{{view Ember.TextArea valueBinding='description'}}</p>
-        <p><button {{action 'save' this}}>Spara</button>
-    </script>  
-
-  <!-- Loading js -->
-  <script type="text/javascript" src="components/jquery/jquery.min.js"></script>
-  <script type="text/javascript" src="components/handlebars/handlebars.js"></script>
-  <script type="text/javascript" src="components/ember/ember.min.js"></script>
-  <script type="text/javascript" src="components/ember-data-shim//ember-data.min.js"></script>
-  <script type="text/javascript" src="components/leaflet/dist/leaflet.js"></script>
-  <script type="text/javascript" src="assets/js/app.js"></script>
+  <!--(if target debug)>
+  <script src="require.js"></script>
+  <!(endif)-->
 </body>
 </html>
