@@ -7,10 +7,6 @@
     "components"
   ],
   "dependencies": {
-    "jquery": "~1.9.0",
-    "ember": "~1.0.0-rc.3",
-    "ember-data-shim": "~0.0.12",
-    "handlebars": "~1.0.0-rc.3",
     "leaflet": "~0.5.1"
   }
 }
