@@ -2,10 +2,12 @@ define([
   // Application.
   "app",
   "modules/report",
-  "modules/map"
+  "modules/map",
+
+  "modules/view"
 ],
 
-function(app, Report, Map) {
+function(app, Report, Map, View) {
 
   // Defining the application router, you can attach sub routers here.
   var Router = Backbone.Router.extend({
@@ -13,8 +15,10 @@ function(app, Report, Map) {
       "": "index",
       "reports": "reports"
     },
-
     index: function() {
+        var MainLayout = new View.Views.Main();
+        MainLayout.render();
+
         var MapLayout = new Map.Views.Layout();
         MapLayout.render();
     },
