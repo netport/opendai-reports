@@ -15,8 +15,18 @@ app.all('/*', function(req, res, next) {
 });
 
 app.configure(function(){
+  /*app.use(function(req, res) {
+    var newUrl = req.protocol + '://' + req.get('Host') + '' + req.url;
+    return res.redirect(newUrl);
+  });
+    app.use(function(req, res){
+      console.log(req.url);
+      express.static(__dirname + req.url);
+    });
+*/
     app.use('/', express.static(__dirname + '/'));
     app.use('/reports', express.static(__dirname + '/'));
+    //app.use('/report/*', express.static(__dirname + '/'));
     app.use('/app/', express.static(__dirname + '/app/'));
     app.use('/app/styles', express.static(__dirname + '/app/styles'));
     app.use('/app/img', express.static(__dirname + '/app/img'));
