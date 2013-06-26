@@ -1,5 +1,5 @@
 define([
-  // Application.
+  // Application.,
   "app",
   "modules/report",
   "modules/map",
@@ -13,22 +13,33 @@ function(app, Report, Map, View) {
   var Router = Backbone.Router.extend({
     routes: {
       "": "index",
-      "reports": "reports"
+      "reports": "reports",
+      "report/:id": "report",
+      "*hello": "all"
     },
     index: function() {
         var MainLayout = new View.Views.Main();
         MainLayout.render();
-
-        var MapLayout = new Map.Views.Layout();
-        MapLayout.render();
     },
     reports: function() {
-        var ReportCollection = new Report.Collection();
-        ReportCollection.fetch({success: function(){
-            var test = {'reports': ReportCollection.models};
-            var ReportLayout = new Report.Views.Layout({'data': test});
+        $('#main').html('Loading...');
+        Report.Store.Reports = new Report.Collection();
+        Report.Store.Reports.fetch({success: function(){
+            var reports = {'reports': Report.Store.Reports.models};
+            var ReportLayout = new Report.Views.Layout({'data': reports});
             ReportLayout.render();
+        }, error: function(obj, err){
+            console.log('Error: Data not loaded');
         }});
+    },
+    report: function(id) {
+        var model = Report.Store.Reports.get(id);
+        var report = {'report': model};
+        var SingleReport = new Report.Views.Single({model: model});
+        SingleReport.render();
+    },
+    all: function() {
+        console.log('Routed!');
     }
   });
 

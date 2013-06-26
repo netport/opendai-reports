@@ -1,14 +1,18 @@
 // Report module
 define([
     // Application.
-    "app"
+    "app",
+    "modules/map",
+    "modules/view"
 ],
 
 // Map dependencies from above array.
-function(app) {
+function(app, Map, View) {
 
     // Create a new module.
     var Report = app.module();
+
+    Report.Store = {};
 
     // Default Model.
     Report.Model = Backbone.Model.extend({
@@ -29,7 +33,38 @@ function(app) {
     // Default View.
     Report.Views.Layout = Backbone.Layout.extend({
         el: '#main',
-        template: "report"
+        template: "report",
+        views: {
+            'header': new View.Views.HeaderView(),
+            '#mapContainer': new Map.Views.Map(),
+            'footer': new View.Views.FooterView()
+        }
+    });
+
+    Report.Views.Single = Backbone.Layout.extend({
+        el: '#main',
+        template: 'singlereport',
+        data: {},
+        model: Report,
+        views: {
+            'header': new View.Views.HeaderView(),
+            '#mapContainer': new Map.Views.Map(),
+            'footer': new View.Views.FooterView()
+        },
+        events: {
+            'click button': 'centerMap'
+        },
+        beforeRender: function() {
+            this.data = this.model.toJSON();
+        },
+        afterRender: function() {
+            console.log(this.model.get('lat')+ ' '+this.model.get('lng'));
+            Map.Store.setView([this.model.get('lat'), this.model.get('lng')], 16);
+            console.log(this.get('data'));
+        },
+        centerMap: function() {
+            Map.Store.setView([54, -09], 18);
+        }
     });
 
     // Return the module for AMD compliance.

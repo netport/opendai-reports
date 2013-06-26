@@ -1,6 +1,7 @@
-Hej
+<div id="mapContainer"></div>
+<h2>Reports</h2>
 <ul>
 	<%_.each(reports, function(item, i, list){%>
-	<li><%=item.get('title')%></li>
+	<li><a href="report/<%=item.get('id')%>"><%=item.get('title')%></a></li>
 	<%})%>
 </ul>
