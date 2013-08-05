@@ -15,6 +15,7 @@ function(app, Report, Map, View) {
       "": "index",
       "reports": "reports",
       "report/:id": "report",
+      "reports/new": "reportsnew",
       "*hello": "all"
     },
     index: function() {
@@ -23,9 +24,9 @@ function(app, Report, Map, View) {
     },
     reports: function() {
         $('#main').html('Loading...');
-        Report.Store.Reports = new Report.Collection();
-        Report.Store.Reports.fetch({success: function(){
-            var reports = {'reports': Report.Store.Reports.models};
+        Report.Store = new Report.Collection();
+        Report.Store.fetch({success: function(){
+            var reports = {'reports': Report.Store.models};
             var ReportLayout = new Report.Views.Layout({'data': reports});
             ReportLayout.render();
         }, error: function(obj, err){
@@ -33,10 +34,14 @@ function(app, Report, Map, View) {
         }});
     },
     report: function(id) {
-        var model = Report.Store.Reports.get(id);
+        var model = Report.Store.get(id);
         var report = {'report': model};
-        var SingleReport = new Report.Views.Single({model: model});
+        var SingleReport = new Report.Views.Single({data: model.toJSON(), model: model});
         SingleReport.render();
+    },
+    reportsnew: function() {
+        var view = new Report.Views.AddNew();
+        view.render();
     },
     all: function() {
         console.log('Routed!');
