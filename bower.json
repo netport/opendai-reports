@@ -6,5 +6,8 @@
   ],
   "dependencies": {
     "leaflet": "~0.5.1"
+  },
+  "devDependencies": {
+    "bootstrap": "~3.0.0"
   }
 }
