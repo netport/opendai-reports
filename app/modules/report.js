@@ -81,7 +81,7 @@ function(app, Map, View) {
             this.marker.addTo(Map.Store);
         },
         centerMap: function() {
-            Map.Store.setView([54, -09], 18);
+            Map.Store.setView([54, -9], 18);
         }
     });
 
