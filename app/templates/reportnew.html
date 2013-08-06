@@ -1,13 +1,13 @@
 <h2>New report</h2>
-<form>
+	<label for="position">Position</label>
+	X<input id="lat" type="text" /> Y<input id="lng" type="text" />
 	<label for="category">Category</label>
-	<select>
-		<option>Test</option>
+	<select id="type">
+		<option value="1">Test</option>
 	</select>
 	<label for="damage">Skada</label>
-	<select>
-		<option>Test</option>
+	<select id="title">
+		<option>Vattenläcka</option>
 	</select>
-	<textarea placeholder="Description"></textarea>
-	<input type="submit" value="Save" />
-</form>
+	<textarea id="description" placeholder="Description"></textarea>
+	<button>Save</button>

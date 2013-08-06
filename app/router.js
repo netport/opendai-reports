@@ -40,6 +40,8 @@ function(app, Report, Map, View) {
         SingleReport.render();
     },
     reportsnew: function() {
+        var MainLayout = new View.Views.Main();
+        MainLayout.render();
         var view = new Report.Views.AddNew();
         view.render();
     },

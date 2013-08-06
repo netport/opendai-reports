@@ -79,8 +79,8 @@ app.get('/api/reports/:id', function(req, res){
 });
 
 app.post('/api/reports', function(req, res){
-  var data = req.body.report;
-  console.log(data);
+  var data = req.body;
+  console.log(req.body.title);
   queryDB("INSERT INTO Reports.reports(title, types_id, description) VALUES('"+data.title+"', 2, '"+data.description+"')", function(result){
     res.send(200, result);
   });
@@ -91,6 +91,7 @@ app.put('/api/reports/:id', function(req, res){
   console.log('Saving data');
   var id = req.params.id;
   var report = req.body.report;
+  console.log(res);
   queryDB("UPDATE Reports.reports SET title = '"+report.title+"', description = '"+report.description+"' WHERE id = "+id+"", function(){
     res.send(200, 'saving'+id);  
   });

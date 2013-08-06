@@ -27,6 +27,12 @@ function(app) {
     template: 'footer'
   });
 
+  //Not used
+  View.Views.MapView = Backbone.View.extend({
+    el: '#mapContainer',
+    template: 'map'
+  });
+
   View.Views.Main = Backbone.Layout.extend({
     views: {
       'header': new View.Views.HeaderView(),
@@ -36,6 +42,7 @@ function(app) {
 
   View.Views.Reports = Backbone.Layout.extend({
     'header': new View.Views.HeaderView(),
+    //'main': new View.Views.MapView(),
     'footer': new View.Views.FooterView()
   });
 

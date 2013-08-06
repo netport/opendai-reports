@@ -31,8 +31,36 @@ function(app, Map, View) {
     Report.Views.AddNew = Backbone.View.extend({
         el: '#main',
         template: 'reportnew',
+        events: {
+            'click button': 'save'
+        },
+        model: Report.Store,
         initialize: function() {
-            console.log('New report');
+            if (navigator.geolocation)
+            {
+                navigator.geolocation.getCurrentPosition(this.showPosition);
+            }
+        },
+        showPosition: function(position) {
+            Report.Store.create();
+            this.model.url = 'http://localhost:8001/api/reports';
+            //this.model.set('lat', this.model.lat );
+            //this.model.set('lng', this.model.lng );
+            $('#lat').val(position.coords.latitude);
+            $('#lng').val(position.coords.longitude);
+        },
+        save: function() {
+            console.log('Saving report');
+
+            this.model.set('title', $('#title').val() );
+            this.model.set('description', $('#description').val() );
+            this.model.set('types_id', $('#type').val() );
+            //Add model to collection
+            //Report.Store.add(newReport);
+            //Save the model to db
+            //this.model.save();
+            console.log(this.lat);
+            console.log(this.model);
         }
     });
 
@@ -46,13 +74,18 @@ function(app, Map, View) {
             'footer': new View.Views.FooterView()
         },
         afterRender: function() {
-            _.each(Report.Store.model, function(model){
-                console.log(model);
-                var attr = model.attributes,
-                    marker = L.Marker([attr.lat, attr.lng]);
-
-                marker.addTo(Map.Store);
+            Map.Store = L.map('map').setView([56.169401778813686, 14.864437580108644], 13);
+            L.tileLayer('http://{s}.tile.cloudmade.com/4e5f745e28654b7eb26aab577eed79ee/997/256/{z}/{x}/{y}.png', {
+                attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>[…]',
+                maxZoom: 18
+            }).addTo(Map.Store);
+            _.each(Report.Store.models, function(model){
+                if(model.get('lat') !== null) {
+                    var marker = new L.Marker([model.get('lat'), model.get('lng')]);
+                    marker.addTo(Map.Store);
+                }
             });
+
         }
     });
 
@@ -75,10 +108,14 @@ function(app, Map, View) {
 
         },
         afterRender: function() {
-            this.marker = new L.marker([this.model.get('lng'), this.model.get('lat')]);
-            console.log(this.marker);
-            Map.Store.setView([this.model.get('lat'), this.model.get('lng')], 16);
-            this.marker.addTo(Map.Store);
+            console.log(this.model);
+            Map.Store = L.map('map').setView([this.model.get('lat'), this.model.get('lng')], 16);
+            L.tileLayer('http://{s}.tile.cloudmade.com/4e5f745e28654b7eb26aab577eed79ee/997/256/{z}/{x}/{y}.png', {
+                attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>[…]',
+                maxZoom: 18
+            }).addTo(Map.Store);
+            var marker = new L.marker([this.model.get('lat'), this.model.get('lng')]);
+            marker.addTo(Map.Store);
         },
         centerMap: function() {
             Map.Store.setView([54, -9], 18);
