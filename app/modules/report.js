@@ -42,25 +42,33 @@ function(app, Map, View) {
             }
         },
         showPosition: function(position) {
-            Report.Store.create();
-            this.model.url = 'http://localhost:8001/api/reports';
-            //this.model.set('lat', this.model.lat );
-            //this.model.set('lng', this.model.lng );
+            console.log(this);
+            this.lat = position.coords.latitude;
+            this.lng = position.coords.longitude;
+
             $('#lat').val(position.coords.latitude);
             $('#lng').val(position.coords.longitude);
+
+            Report.Views.AddNew.lat = position.coords.latitude;
+            Report.Views.AddNew.lng = position.coords.longitude;
+
         },
         save: function() {
             console.log('Saving report');
 
-            this.model.set('title', $('#title').val() );
-            this.model.set('description', $('#description').val() );
-            this.model.set('types_id', $('#type').val() );
+            var newReport = new Report.Model();
+            newReport.url = 'http://localhost:8001/api/reports';
+
+            newReport.set('title', $('#title').val() );
+            newReport.set('description', $('#description').val() );
+            newReport.set('types_id', $('#type').val() );
+            newReport.set('lat', Report.Views.AddNew.lat);
+            newReport.set('lng', Report.Views.AddNew.lng);
             //Add model to collection
             //Report.Store.add(newReport);
             //Save the model to db
-            //this.model.save();
-            console.log(this.lat);
-            console.log(this.model);
+            newReport.save();
+            console.log(newReport);
         }
     });
 

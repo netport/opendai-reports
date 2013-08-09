@@ -81,7 +81,7 @@ app.get('/api/reports/:id', function(req, res){
 app.post('/api/reports', function(req, res){
   var data = req.body;
   console.log(req.body.title);
-  queryDB("INSERT INTO Reports.reports(title, types_id, description) VALUES('"+data.title+"', 2, '"+data.description+"')", function(result){
+  queryDB("INSERT INTO Reports.reports(title, types_id, description, lat, lng) VALUES('"+data.title+"', "+data.types_id+", '"+data.description+"', '"+data.lat+"', '"+data.lng+"')", function(result){
     res.send(200, result);
   });
 
