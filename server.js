@@ -19,14 +19,15 @@ app.configure(function(){
     var newUrl = req.protocol + '://' + req.get('Host') + '' + req.url;
     return res.redirect(newUrl);
   });
+
     app.use(function(req, res){
       console.log(req.url);
-      express.static(__dirname + req.url);
+      express.static(__dirname +req.url);
     });
 */
     app.use('/', express.static(__dirname + '/'));
     app.use('/reports', express.static(__dirname + '/'));
-    //app.use('/report/*', express.static(__dirname + '/'));
+    //app.use('/report', express.static(__dirname + '/'));
     app.use('/app/', express.static(__dirname + '/app/'));
     app.use('/app/styles', express.static(__dirname + '/app/styles'));
     app.use('/app/img', express.static(__dirname + '/app/img'));
@@ -63,7 +64,11 @@ function queryDB(query, callback) {
     done();//call done() to signal you are finished with the client
   });
 }
-
+/*
+app.get('/report/:id', function(req, res){
+  res.send(express.static(__dirname+'/'));
+});
+*/
 app.get('/api/reports', function(req, res){
   queryDB('SELECT Reports.reports.id, Reports.reports.title, Reports.reports.lat, Reports.reports.lng, Reports.reports.types_id, Reports.reports.description, Reports.types.title AS type FROM Reports.reports INNER JOIN Reports.types ON Reports.reports.types_id = Reports.types.id', function(result){
     data.reports = result;
