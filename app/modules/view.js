@@ -1,24 +1,26 @@
   // Map module
 define([
   // Application.
-  "app"
+  "app",
+  "modules/user"
 ],
 
 // Map dependencies from above array.
-function(app) {
+function(app, User) {
 
   // Create a new module.
   var View = app.module();
 
-  var UserBox = Backbone.View.extend({
+/*
+  View.Views.UserBox = Backbone.View.extend({
     template: 'userinfo'
   });
-
+*/
   View.Views.HeaderView = Backbone.View.extend({
     el: '#header',
     template: 'menu',
     views: {
-      '#userbox': new UserBox()
+      //'#userbox': User.Views.View()
     }
   });
 
@@ -31,13 +33,6 @@ function(app) {
   View.Views.MapView = Backbone.View.extend({
     el: '#mapContainer',
     template: 'map'
-  });
-
-  View.Views.Main = Backbone.Layout.extend({
-    views: {
-      'header': new View.Views.HeaderView(),
-      'footer': new View.Views.FooterView()
-    }
   });
 
   View.Views.Reports = Backbone.Layout.extend({

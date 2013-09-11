@@ -4,3 +4,5 @@ node_modules/
 
 # components are handled by bower
 components/
+
+*.styl

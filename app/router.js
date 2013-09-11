@@ -3,11 +3,11 @@ define([
   "app",
   "modules/report",
   "modules/map",
-
-  "modules/view"
+  "modules/view",
+  "modules/user"
 ],
 
-function(app, Report, Map, View) {
+function(app, Report, Map, View, User) {
 
   // Defining the application router, you can attach sub routers here.
   var Router = Backbone.Router.extend({
@@ -19,8 +19,39 @@ function(app, Report, Map, View) {
       "*hello": "all"
     },
     index: function() {
-        var MainLayout = new View.Views.Main();
+        //var MainLayout = new View.Views.Main();
+        //MainLayout.render();
+
+        var MainLayout = new Backbone.Layout({
+          views: {
+            'header': new View.Views.HeaderView()
+            //'footer': new View.Views.FooterView()
+          }
+        });
+
         MainLayout.render();
+
+        FB.login(function(response) {
+           if (response.authResponse) {
+             console.log('Welcome!  Fetching your information.... ');
+             FB.api('/me', function(response) {
+              console.log(response);
+              var user = User.Model;
+              user.set({
+                'username': response.username,
+                'first_name': response.first_name,
+                'last_name': response.last_name
+              });
+              console.log('Good to see you, ' + response.name + '.');
+              FB.api('/me/picture', function(response){
+                user.set({'image': response.data.url});
+                //console.log(User.Model);
+              });
+             });
+          } else {
+            console.log('User cancelled login or did not fully authorize.');
+          }
+        });
     },
     reports: function() {
         $('#main').html('Loading...');
