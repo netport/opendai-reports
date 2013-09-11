@@ -37,7 +37,13 @@ var jam = {
                 "lodash"
             ],
             "exports": "Backbone.LayoutManager"
+        },
+        "facebook" : {
+            "exports": 'FB'
         }
+    },
+    "paths" : {
+        'facebook': '//connect.facebook.net/en_US/all'
     }
 };
 
