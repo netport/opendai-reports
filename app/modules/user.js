@@ -11,7 +11,7 @@ function(app) {
   var User = app.module();
 
   // Default Model.
-  User.Model = new Backbone.Model({
+  User.Model = Backbone.Model.extend({
 
   });
 
@@ -26,16 +26,21 @@ function(app) {
   });
 
   User.Views.View = Backbone.View.extend({
-    model: User.Model,
-    initialize: function() {
-      User.Model.on('change', function(){
-        console.log('model update');
-      });
-    },
-    el: '#header',
+    el: '#main',
     template: "userinfo",
-    render: function() {
-      console.log('rendering user');
+    model: User,
+    initialize: function() {
+      that = this;
+      _.bindAll(this,'render');
+      /*this.model.bind('change:image', function() {
+        that.update();
+      });*/
+    }, update: function() {
+      if(this.model.get('image')!==null){
+        this.render();
+      }
+    }, afterRender: function() {
+      console.log(this.model);
     }
   });
 

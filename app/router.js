@@ -15,37 +15,39 @@ function(app, Report, Map, View, User) {
       "": "index",
       "reports": "reports",
       "report/:id": "report",
-      "reports/new": "reportsnew",
-      "*hello": "all"
+      "reports/:action": "reports",
+      "logout": "logout",
+      //"*hello": "all"
+    },
+    initialize: function() {
+      that = this;
+      var MainLayout = new Backbone.Layout({
+        views: {
+          'header': new View.Views.HeaderView(),
+          'footer': new View.Views.FooterView()
+        }
+      });
+
+      MainLayout.render();
     },
     index: function() {
-        //var MainLayout = new View.Views.Main();
-        //MainLayout.render();
-
-        var MainLayout = new Backbone.Layout({
-          views: {
-            'header': new View.Views.HeaderView()
-            //'footer': new View.Views.FooterView()
-          }
-        });
-
-        MainLayout.render();
-
+        var UserModel = new User.Model();
         FB.login(function(response) {
            if (response.authResponse) {
              console.log('Welcome!  Fetching your information.... ');
              FB.api('/me', function(response) {
-              console.log(response);
-              var user = User.Model;
-              user.set({
+              //console.log(response);
+              UserModel.set({
                 'username': response.username,
                 'first_name': response.first_name,
-                'last_name': response.last_name
+                'last_name': response.last_name,
+                'authorized': true
               });
               console.log('Good to see you, ' + response.name + '.');
               FB.api('/me/picture', function(response){
-                user.set({'image': response.data.url});
-                //console.log(User.Model);
+                UserModel.set({'image': response.data.url});
+                var UserInfoView = new User.Views.View({data: UserModel.toJSON() });
+                UserInfoView.render();
               });
              });
           } else {
@@ -53,7 +55,14 @@ function(app, Report, Map, View, User) {
           }
         });
     },
-    reports: function() {
+    reports: function(action) {
+      if(!UserModel.authorized) {
+        this.navigate('', {trigger:true});
+      }
+      if(action=='new') {
+        var view = new Report.Views.AddNew();
+        view.render();
+      } else {
         $('#main').html('Loading...');
         Report.Store = new Report.Collection();
         Report.Store.fetch({success: function(){
@@ -63,6 +72,7 @@ function(app, Report, Map, View, User) {
         }, error: function(obj, err){
             console.log('Error: Data not loaded');
         }});
+      }
     },
     report: function(id) {
         var model = Report.Store.get(id);
@@ -70,14 +80,18 @@ function(app, Report, Map, View, User) {
         var SingleReport = new Report.Views.Single({data: model.toJSON(), model: model});
         SingleReport.render();
     },
-    reportsnew: function() {
-        var MainLayout = new View.Views.Main();
-        MainLayout.render();
-        var view = new Report.Views.AddNew();
-        view.render();
-    },
     all: function() {
         console.log('Routed!');
+    },
+    logout: function() {
+      that = this;
+      if(FB) {
+        FB.logout(function(response){
+          console.log('Logged out');
+          that.navigate('', {trigger:true});
+        });
+      }
+      
     }
   });
 
