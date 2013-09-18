@@ -68,7 +68,7 @@ function(app, Map, View) {
             //Report.Store.add(newReport);
             //Save the model to db
             newReport.save();
-            console.log(newReport);
+            console.log('Report saved: '+newReport);
         }
     });
 
