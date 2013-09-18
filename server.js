@@ -27,6 +27,7 @@ app.configure(function(){
 */
     app.use('/', express.static(__dirname + '/'));
     app.use('/reports', express.static(__dirname + '/'));
+    app.use('/logout', express.static(__dirname + '/'));
     //app.use('/report', express.static(__dirname + '/'));
     app.use('/app/', express.static(__dirname + '/app/'));
     app.use('/app/styles', express.static(__dirname + '/app/styles'));
