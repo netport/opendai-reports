@@ -1,8 +1,8 @@
+# node modules
+/node_modules/
 
-# node modules are handled by npm
-node_modules/
+# bower components
+/vendor/bower/
 
-# components are handled by bower
-components/
-
-*.styl
+# distribution
+/dist/
