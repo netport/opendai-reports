@@ -2,7 +2,7 @@
   "name": "backbone-boilerplate",
   "dependencies": {
     "leaflet": "~0.5.1",
-    "html5-boilerplate": "~4.3.0",
+    "bootstrap": "~3.0.0",
     "almond": "~0.2.6",
     "lodash": "~2.2.0",
     "backbone": "~1.0.0",
